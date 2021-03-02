@@ -25,7 +25,7 @@ def generateJPG2MP4(videoFile):
     os.system("mplayer -vo jpeg:quality=100:outdir=../original/" + str(os.path.basename(videoFile).split(".")[0]) + " " + str(videoFile))
 
 def convert(path_in, path_out, quality):
-    command = "convert -quality " + str(quality) + " "
+    command = "magick convert -quality " + str(quality) + " "
     command += path_in + ' ' + path_out
     os.system(command)
 
@@ -46,7 +46,7 @@ def encode(videoFile):
     outputDir = "../compressed/" + str(os.path.basename(videoFile).split(".")[0])
     print("inputDir: {}, outputDir: {}\n".format(inputDir, outputDir))
 
-    startFrame = 400
+    startFrame = 101
     endFrame = len(os.listdir(inputDir))
     print("startFrame: {}, endFrame: {}\n".format(startFrame, endFrame))
 
@@ -79,18 +79,18 @@ def encode(videoFile):
         originalSize = os.path.getsize(img_in)/1024  # y(k)
         compressedSize = os.path.getsize(img_out)/1024  # y(k)
 
+        # supervision
         if switcher.getSwithMode()==0:
-            # compute new control parameter
-            quality = optCtrl.PIControl(quality, compressedSize)  # u(k)
-
-            # supervision
-            alarm = detector.detector(quality, originalSize, compressedSize)
+            alarm = detector.detector(quality, originalSize, compressedSize) # u(k-1),a(k),y(k)
             print(detector.getBMean(), detector.getBCovariance(), alarm)
 
             if alarm==1:
                 switcher.setSwitchMode(alarm)
 
-        elif switcher.getSwithMode()==1:
+        if switcher.getSwithMode()==0:
+            # compute new control parameter
+            quality = optCtrl.PIControl(quality, compressedSize) # u(k)
+        else:
             # compute new control parameter
             quality = mandCtrl.control(quality, compressedSize)  # u(k)
 
@@ -104,7 +104,7 @@ def encode(videoFile):
     log.close()
 
 def main():
-    videoFile = "../mp4/positiveVideo.mp4"
+    videoFile = "../mp4/negativeVideo.mp4"
     generateJPG2MP4(videoFile)
     encode(videoFile)
 

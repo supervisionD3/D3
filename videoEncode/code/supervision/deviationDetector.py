@@ -56,11 +56,11 @@ class DeviationDetector:
             self.list_y.append(y)
 
             delta_y_2 = self.list_y[1] - self.list_y[0]
-            delta_u_2 = self.list_u[1] - self.list_u[0]
+            delta_u_2 = self.list_u[2] - self.list_u[1]
             delta_a_1 = self.list_a[2] - self.list_a[1]
             self.stateEstimation(delta_y_2, delta_u_2, delta_a_1)
 
-            delta_u_1 = self.list_u[2] - self.list_u[1]
+            delta_u_1 = self.list_u[3] - self.list_u[2]
             if abs(delta_u_1)>0:
                 delta_a = self.list_a[3] - self.list_a[2]
                 delta_y = self.list_y[3] - self.list_y[2]
