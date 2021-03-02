@@ -75,14 +75,6 @@ for time in range(0, maxstep):
     if switcher.getSwithMode()==0 and time%intervalNum==0:
         list_YS.append([HMI.LIT101.Pv,HMI.LIT301.Pv,HMI.LIT401.Pv])
 
-    # PLC working
-    PLC1.Pre_Main_Raw_Water(IO_P1,HMI)
-    PLC2.Pre_Main_UF_Feed_Dosing(IO_P2,HMI)
-    PLC3.Pre_Main_UF_Feed(IO_P3,HMI,Sec_P,Min_P)
-    PLC4.Pre_Main_RO_Feed_Dosing(IO_P4,HMI)
-    PLC5.Pre_Main_High_Pressure_RO(IO_P5,HMI,Sec_P,Min_P)
-    PLC6.Pre_Main_Product(IO_P6,HMI)
-
     # supervision
     if switcher.getSwithMode() == 0:
         if int(time/intervalNum)>1 and time%intervalNum==0:
@@ -95,15 +87,15 @@ for time in range(0, maxstep):
                           [0.0, 0.0, U_401[0]],
                           [0.0, 0.0, U_401[1]]])
 
-            Y = np.array([[list_YS[len(list_YS)-2][0] - list_YS[len(list_YS)-3][0], 0.0, 0.0],
-                          [0.0, list_YS[len(list_YS)-2][1] - list_YS[len(list_YS)-3][1], 0.0],
-                          [0.0, 0.0, list_YS[len(list_YS)-2][2] - list_YS[len(list_YS)-3][2]]])
+            Y = np.array([[list_YS[len(list_YS)-1][0] - list_YS[len(list_YS)-2][0], 0.0, 0.0],
+                          [0.0, list_YS[len(list_YS)-1][1] - list_YS[len(list_YS)-2][1], 0.0],
+                          [0.0, 0.0, list_YS[len(list_YS)-1][2] - list_YS[len(list_YS)-2][2]]])
 
             # print(U)
             # print(Y)
 
             alarm = detector.detector(U, Y)
-            # print(detector.getBMean())
+            #print(detector.getBMean())
             print(alarm)
 
             for i in range(0, len(alarm)):
@@ -140,3 +132,11 @@ for time in range(0, maxstep):
             U_401[0] = round(U_401[0] + tau, 3)
         if IO_P4.P401.DO_Start == 1 or IO_P4.P402.DO_Start == 1:
             U_401[1] = round(U_401[1] + tau, 3)
+
+    # PLC working
+    PLC1.Pre_Main_Raw_Water(IO_P1,HMI)
+    PLC2.Pre_Main_UF_Feed_Dosing(IO_P2,HMI)
+    PLC3.Pre_Main_UF_Feed(IO_P3,HMI,Sec_P,Min_P)
+    PLC4.Pre_Main_RO_Feed_Dosing(IO_P4,HMI)
+    PLC5.Pre_Main_High_Pressure_RO(IO_P5,HMI,Sec_P,Min_P)
+    PLC6.Pre_Main_Product(IO_P6,HMI)

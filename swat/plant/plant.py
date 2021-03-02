@@ -66,75 +66,74 @@ class plant:
 		# to process the instruction, meaning there's a lapse
 		# between the instruction sent and carried out.
 
+		P1.MV101.DI_ZSO = P1.MV101.DO_Open    # Raw Water Inlet On/Off Valve
+		P1.MV101.DI_ZSC = P1.MV101.DO_Close
+		P2.MV201.DI_ZSO = P2.MV201.DO_Open    # Raw Water Tank Outlet On/Off Valve
+		P2.MV201.DI_ZSC = P2.MV201.DO_Close
+		P3.MV301.DI_ZSO = P3.MV301.DO_Open	  # Bashwash On/Off Valve
+		P3.MV301.DI_ZSC = P3.MV301.DO_Close
+		P3.MV302.DI_ZSO = P3.MV302.DO_Open
+		P3.MV302.DI_ZSC = P3.MV302.DO_Close
+		P3.MV303.DI_ZSO = P3.MV303.DO_Open
+		P3.MV303.DI_ZSC = P3.MV303.DO_Close
+		P3.MV304.DI_ZSO = P3.MV304.DO_Open
+		P3.MV304.DI_ZSC = P3.MV304.DO_Close
+		P5.MV501.DI_ZSO = P5.MV501.DO_Open	 # RO Permeate Valve
+		P5.MV501.DI_ZSC = P5.MV501.DO_Close
+		P5.MV502.DI_ZSO = P5.MV502.DO_Open	 # Backwash Valve
+		P5.MV502.DI_ZSC = P5.MV502.DO_Close
+		P5.MV503.DI_ZSO = P5.MV503.DO_Open	 # Permeate Reject Valve
+		P5.MV503.DI_ZSC = P5.MV503.DO_Close
+		P5.MV504.DI_ZSO = P5.MV504.DO_Open
+		P5.MV504.DI_ZSC = P5.MV504.DO_Close
+
+		P1.P101.DI_Run = P1.P101.DO_Start
+		P1.P102.DI_Run = P1.P102.DO_Start
+		P3.P301.DI_Run = P3.P301.DO_Start
+		P3.P302.DI_Run = P3.P302.DO_Start
+		P4.P401.DI_Run = P4.P401.DO_Start
+		P4.P402.DI_Run = P4.P402.DO_Start
+		P5.P501.DI_Run = (P5.P501_VSD_Out.Start or not P5.P501_VSD_Out.Stop) + 0
+		P5.P502.DI_Run = (P5.P502_VSD_Out.Start or not P5.P502_VSD_Out.Stop) + 0
+		P6.P601.DI_Run = P6.P601.DO_Start
+		P6.P602.DI_Run = P6.P602.DO_Start
+
+		P4.UV401.DI_Run = P4.UV401.DO_Start
+
 		# supervision: mandatory controller
 		if switcher.getSwithMode()==1:
 			# tank101
-			if self.h_t101 > HMI.LIT101.SAHH:
+			if self.h_noisy_t101 > HMI.LIT101.SAHH:
 				P1.MV101.DI_ZSO = 0
 				P1.MV101.DI_ZSC = 1
 
-			elif self.h_t101 < HMI.LIT101.SALL:
+			elif self.h_noisy_t101 < HMI.LIT101.SALL:
 				P1.P101.DI_Run = 0
 				P1.P102.DI_Run = 0
 
 			# tank301
-			if self.h_t301 > HMI.LIT301.SAHH:
+			if self.h_noisy_t301 > HMI.LIT301.SAHH:
 				P2.MV201.DI_ZSO = 0
 				P2.MV201.DI_ZSC = 1
 
 				P1.P101.DI_Run = 0
 				P1.P102.DI_Run = 0
 
-			elif self.h_t301 < HMI.LIT301.SALL:
+			elif self.h_noisy_t301 < HMI.LIT301.SALL:
 				P3.P301.DI_Run = 0
 				P3.P302.DI_Run = 0
 
 			# tank401
-			if self.h_t401 > HMI.LIT401.SAHH:
+			if self.h_noisy_t401 > HMI.LIT401.SAHH:
 				P3.P301.DI_Run = 0
 				P3.P302.DI_Run = 0
 
 				P3.MV302.DI_ZSO = 0
 				P3.MV302.DI_ZSC = 1
 
-			elif self.h_t401 < HMI.LIT401.SALL:
+			elif self.h_noisy_t401 < HMI.LIT401.SALL:
 				P4.P401.DI_Run = 0
 				P4.P402.DI_Run = 0
-
-		else:
-			P1.MV101.DI_ZSO = P1.MV101.DO_Open    # Raw Water Inlet On/Off Valve
-			P1.MV101.DI_ZSC = P1.MV101.DO_Close
-			P2.MV201.DI_ZSO = P2.MV201.DO_Open    # Raw Water Tank Outlet On/Off Valve
-			P2.MV201.DI_ZSC = P2.MV201.DO_Close
-			P3.MV301.DI_ZSO = P3.MV301.DO_Open	  # Bashwash On/Off Valve
-			P3.MV301.DI_ZSC = P3.MV301.DO_Close
-			P3.MV302.DI_ZSO = P3.MV302.DO_Open
-			P3.MV302.DI_ZSC = P3.MV302.DO_Close
-			P3.MV303.DI_ZSO = P3.MV303.DO_Open
-			P3.MV303.DI_ZSC = P3.MV303.DO_Close
-			P3.MV304.DI_ZSO = P3.MV304.DO_Open
-			P3.MV304.DI_ZSC = P3.MV304.DO_Close
-			P5.MV501.DI_ZSO = P5.MV501.DO_Open	 # RO Permeate Valve
-			P5.MV501.DI_ZSC = P5.MV501.DO_Close
-			P5.MV502.DI_ZSO = P5.MV502.DO_Open	 # Backwash Valve
-			P5.MV502.DI_ZSC = P5.MV502.DO_Close
-			P5.MV503.DI_ZSO = P5.MV503.DO_Open	 # Permeate Reject Valve
-			P5.MV503.DI_ZSC = P5.MV503.DO_Close
-			P5.MV504.DI_ZSO = P5.MV504.DO_Open
-			P5.MV504.DI_ZSC = P5.MV504.DO_Close
-
-			P1.P101.DI_Run = P1.P101.DO_Start
-			P1.P102.DI_Run = P1.P102.DO_Start
-			P3.P301.DI_Run = P3.P301.DO_Start
-			P3.P302.DI_Run = P3.P302.DO_Start
-			P4.P401.DI_Run = P4.P401.DO_Start
-			P4.P402.DI_Run = P4.P402.DO_Start
-			P5.P501.DI_Run = (P5.P501_VSD_Out.Start or not P5.P501_VSD_Out.Stop) + 0
-			P5.P502.DI_Run = (P5.P502_VSD_Out.Start or not P5.P502_VSD_Out.Stop) + 0
-			P6.P601.DI_Run = P6.P601.DO_Start
-			P6.P602.DI_Run = P6.P602.DO_Start
-
-			P4.UV401.DI_Run = P4.UV401.DO_Start
 
 	def Plant(self, P1, P2, P3, P4, P5, P6, HMI):
 		# Feeding water to tank101 (open MV101)

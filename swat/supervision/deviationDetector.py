@@ -77,14 +77,14 @@ class DeviationDetector:
 
             # update state
             y_2 = self.list_y[0]
-            u_2 = self.list_u[0]
+            u_2 = self.list_u[1]
 
             if u_2[0][0]>0 or u_2[1][0]>0 or \
                u_2[2][1]>0 or u_2[3][1]>0 or \
                u_2[4][2]>0 or u_2[5][2]>0:
                 self.stateEstimation(y_2, u_2)
 
-            u_1 = self.list_u[1]
+            u_1 = self.list_u[2]
             y = self.list_y[2]
 
             # passive detector
