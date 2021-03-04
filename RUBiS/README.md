@@ -7,7 +7,7 @@
    #### Install to /usr/include/eigen3/
        sudo apt-get install libeigen3-dev
 
-   ### Run our simulation:
+   #### Run our simulation:
        cd RUBiS/swim/simulations
        ./runexp.sh
 
