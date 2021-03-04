@@ -1,18 +1,15 @@
-==============
-SWaT Simulator
-==============
-
-You can download the original simulator from the link: 
+### You can download the original simulator from the link: 
 https://sav.sutd.edu.sg/research/physical-attestation/sp-2018-paper-supplementary-material/
 
 
+### Running the simulation
 The main function of this software is swat.py: you can run it by typing:
 
 	python3 swat.py
 	
 in a terminal.
 
-The structure is as follows:
+### The structure is as follows:
 
 1. The IO.py file instantiates the input output classes for communication between PLC and plant.
 2. The SCADA.py file instantiates the input output classes for communication between PLC and HMI.
@@ -24,10 +21,7 @@ The structure is as follows:
 8. The plant/ directory contains the plant model and mandatory controller.
 9. The supervision/ directory contains model deviation detector and a switcher.
 
-================
-Pre-requirements
-================
-
-python version 3.7
-scipy
-numpy
+### Requirements
+  - python version 3.7
+  - scipy
+  - numpy
